@@ -4,15 +4,28 @@
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
+    "@rn-primitives/portal": "^1.5.3",
+    "@rn-primitives/slot": "^1.5.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "expo": "~58.0.25",
     "expo-status-bar": "~58.0.5",
+    "nativewind": "^4.2.7",
     "react": "19.3.0",
     "react-dom": "^19.3.0",
     "react-native": "0.88.1",
-    "react-native-web": "^0.21.4"
+    "react-native-reanimated": "4.7.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-web": "^0.21.4",
+    "react-native-worklets": "0.13.0",
+    "tailwind-merge": "^3.7.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/react": "~19.3.0",
+    "babel-preset-expo": "^58.0.26",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "tailwindcss": "^3.4.19",
     "typescript": "~6.0.3"
   },
   "scripts": {
