@@ -101,7 +101,7 @@ export default function LandingScreen({ onGetStarted, onLogin }: LandingScreenPr
           </View>
 
           {/* Subtitle */}
-          <Text style={styles.subtitle}>
+          <Text className='text-red-600 bg-green-600'>
             From coffee chats and live gigs to city walks and deep conversations — book verified, friendly people who are truly available.
           </Text>
         </View>

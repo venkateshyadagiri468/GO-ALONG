@@ -5,6 +5,9 @@ import { Ionicons } from '@expo/vector-icons';
 import LandingScreen from './src/screens/LandingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
+import { PortalHost } from '@rn-primitives/portal'
+// @ts-ignore - Expo/NativeWind resolves global.css at build time
+import "./global.css";
 
 type ScreenState = 'LANDING' | 'LOGIN' | 'REGISTER' | 'HOME';
 
@@ -98,6 +101,7 @@ export default function App() {
           <Text style={styles.logoutButtonText}>Log Out</Text>
         </TouchableOpacity>
       </View>
+      <PortalHost />
     </SafeAreaView>
   );
 }
