@@ -1,16 +1,19 @@
+
 import React, { useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Text } from '@/components/ui/text';
 
 interface LoginScreenProps {
   onLoginSuccess: (email: string) => void;
@@ -29,16 +32,19 @@ export default function LoginScreen({
 
   const handleLogin = () => {
     setError('');
+
     if (!email.trim() || !password.trim()) {
       setError('Please enter both email and password.');
       return;
     }
+
     if (!email.includes('@')) {
       setError('Please enter a valid email address.');
       return;
     }
 
     setLoading(true);
+
     setTimeout(() => {
       setLoading(false);
       // Successful mock login
@@ -49,56 +55,99 @@ export default function LoginScreen({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
+      className="flex-1 bg-gray-50"
     >
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.headerContainer}>
-          <View style={styles.logoBadge}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerClassName="grow justify-center px-6 py-8"
+      >
+        {/* Header */}
+        <View className="mb-8 items-center">
+          <View className="mb-4 h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
             <Ionicons name="heart" size={32} color="#4F46E5" />
           </View>
-          <Text style={styles.appTitle}>Project Companion</Text>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>
-            Continue your journey with verified companionship and meaningful conversations.
+
+          <Text className="mb-2 text-sm font-bold uppercase tracking-widest text-indigo-600">
+            Project Companion
+          </Text>
+
+          <Text className="mb-2 text-3xl font-bold text-gray-800">
+            Welcome Back
+          </Text>
+
+          <Text className="px-4 text-center text-base leading-6 text-gray-500">
+            Continue your journey with verified companionship and meaningful
+            conversations.
           </Text>
         </View>
 
+        {/* Error Message */}
         {error ? (
-          <View style={styles.errorBox}>
+          <View className="mb-4 flex-row items-center rounded-lg bg-red-100 p-3">
             <Ionicons name="alert-circle" size={20} color="#DC2626" />
-            <Text style={styles.errorText}>{error}</Text>
+            <Text className="ml-2 flex-1 text-sm font-medium text-red-600">
+              {error}
+            </Text>
           </View>
         ) : null}
 
-        <View style={styles.formContainer}>
-          <Text style={styles.label}>Email Address</Text>
-          <View style={styles.inputWrapper}>
-            <Ionicons name="mail-outline" size={20} color="#6B7280" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
+        {/* Login Form */}
+        <View className="mb-6">
+          {/* Email */}
+          <Text className="mb-2 text-sm font-semibold text-gray-700">
+            Email Address
+          </Text>
+
+          <View className="mb-5 h-[52px] flex-row items-center rounded-xl border border-gray-300 bg-white px-3">
+            <Ionicons
+              name="mail-outline"
+              size={20}
+              color="#6B7280"
+              style={{ marginRight: 10 }}
+            />
+
+            <Input
+              className="h-full flex-1 border-0 bg-transparent px-0 text-base text-gray-800 shadow-none"
               placeholder="Enter your email address"
               placeholderTextColor="#9CA3AF"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              autoCorrect={false}
             />
           </View>
 
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.inputWrapper}>
-            <Ionicons name="lock-closed-outline" size={20} color="#6B7280" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
+          {/* Password */}
+          <Text className="mb-2 text-sm font-semibold text-gray-700">
+            Password
+          </Text>
+
+          <View className="mb-2 h-[52px] flex-row items-center rounded-xl border border-gray-300 bg-white px-3">
+            <Ionicons
+              name="lock-closed-outline"
+              size={20}
+              color="#6B7280"
+              style={{ marginRight: 10 }}
+            />
+
+            <Input
+              className="h-full flex-1 border-0 bg-transparent px-0 text-base text-gray-800 shadow-none"
               placeholder="Enter your password"
               placeholderTextColor="#9CA3AF"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
+              autoCapitalize="none"
             />
+
             <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={styles.eyeIcon}
+              onPress={() => setShowPassword((previous) => !previous)}
+              className="p-2"
+              accessibilityRole="button"
+              accessibilityLabel={
+                showPassword ? 'Hide password' : 'Show password'
+              }
             >
               <Ionicons
                 name={showPassword ? 'eye-off-outline' : 'eye-outline'}
@@ -108,174 +157,51 @@ export default function LoginScreen({
             </TouchableOpacity>
           </View>
 
+          {/* Forgot Password */}
           <TouchableOpacity
-            style={styles.forgotPasswordContainer}
-            onPress={() => alert('Password reset link sent to your email (Mock).')}
+            className="mb-6 self-end"
+            onPress={() =>
+              alert('Password reset link sent to your email (Mock).')
+            }
           >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            <Text className="text-sm font-semibold text-indigo-600">
+              Forgot Password?
+            </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.loginButton}
+          {/* Login Button */}
+          <Button
+            className="h-[52px] w-full rounded-xl bg-indigo-600"
             onPress={handleLogin}
             disabled={loading}
           >
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
-              <Text style={styles.loginButtonText}>Login</Text>
+              <Text className="text-base font-bold text-white">Login</Text>
             )}
-          </TouchableOpacity>
+          </Button>
         </View>
 
-        <View style={styles.footerContainer}>
-          <Text style={styles.footerText}>Don't have an account? </Text>
+        {/* Register Footer */}
+        <View className="mb-6 flex-row justify-center">
+          <Text className="text-[15px] text-gray-500">
+            Don't have an account?{' '}
+          </Text>
+
           <TouchableOpacity onPress={onNavigateToRegister}>
-            <Text style={styles.registerLinkText}>Create Account</Text>
+            <Text className="text-[15px] font-bold text-indigo-600">
+              Create Account
+            </Text>
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.termsNotice}>
-          By continuing, you agree to our Terms of Service and Privacy Policy. Secure Better Auth protected session.
+        {/* Terms */}
+        <Text className="px-4 text-center text-xs leading-[18px] text-gray-400">
+          By continuing, you agree to our Terms of Service and Privacy Policy.
+          Secure Better Auth protected session.
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F9FAFB',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 24,
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  logoBadge: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: '#EEF2FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  appTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#4F46E5',
-    textTransform: 'uppercase',
-    letterSpacing: 1.2,
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 15,
-    color: '#6B7280',
-    textAlign: 'center',
-    paddingHorizontal: 16,
-  },
-  errorBox: {
-    flexDirection: 'row',
-    backgroundColor: '#FEE2E2',
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  errorText: {
-    color: '#DC2626',
-    marginLeft: 8,
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  formContainer: {
-    marginBottom: 24,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#374151',
-    marginBottom: 6,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 10,
-    marginBottom: 16,
-    paddingHorizontal: 12,
-    height: 50,
-  },
-  inputIcon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    color: '#1F2937',
-  },
-  eyeIcon: {
-    padding: 8,
-  },
-  forgotPasswordContainer: {
-    alignItems: 'flex-end',
-    marginBottom: 24,
-  },
-  forgotPasswordText: {
-    color: '#4F46E5',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  loginButton: {
-    backgroundColor: '#4F46E5',
-    height: 52,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#4F46E5',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  loginButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  footerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 24,
-  },
-  footerText: {
-    color: '#6B7280',
-    fontSize: 15,
-  },
-  registerLinkText: {
-    color: '#4F46E5',
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-  termsNotice: {
-    fontSize: 12,
-    color: '#9CA3AF',
-    textAlign: 'center',
-    lineHeight: 18,
-    paddingHorizontal: 16,
-  },
-});
